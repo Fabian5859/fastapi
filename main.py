@@ -5,6 +5,11 @@ df = pd.read_parquet("./Dataset/movies_dataset.parquet", engine='pyarrow')
 
 app = FastAPI()
 
+# Ruta raíz
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the FastAPI application!"}
+
 # Función para obtener la cantidad de películas en un mes
 @app.get('/cantidad_filmaciones_mes/{mes}')
 def cantidad_filmaciones_mes(mes: str):
