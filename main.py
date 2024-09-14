@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 import pandas as pd
 
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import StandardScaler
+
 df = pd.read_parquet("./Dataset/movies_dataset.parquet", engine='pyarrow')
 
 app = FastAPI()
@@ -98,4 +103,37 @@ def get_director(nombre_director: str):
         return {"mensaje": f"El director {nombre_director} ha tenido un retorno total de {retorno_total}. Detalles de sus películas:", "peliculas": detalles_peliculas}
     else:
         return {"mensaje": "Director no encontrado"}
-        
+
+# Función para recomendación
+@app.get('/get_recommendations/{base_movie_title}')
+def get_top_5_recommendations(df, base_movie_title):
+    # Verificar si la película base está en el DataFrame
+    if base_movie_title not in df['title'].values:
+        raise ValueError(f"La película '{base_movie_title}' no se encuentra en el dataset.")
+    
+    # Paso 1: Preparar el Dataset
+    features = ['vote_average', 'popularity', 'runtime', 'release_year']
+    X = df[features]
+
+    # Normalizar las características
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    # Paso 2: Encontrar el índice de la película base
+    movie_base_index = df[df['title'] == base_movie_title].index[0]
+    movie_base_vector = X_scaled[movie_base_index].reshape(1, -1)
+
+    # Paso 3: Calcular la Similitud del Coseno
+    similarities = cosine_similarity(movie_base_vector, X_scaled).flatten()
+
+    # Paso 4: Añadir la similitud al DataFrame
+    df['similarity'] = similarities
+
+    # Paso 5: Obtener las 5 películas más similares
+    recommendations = (df[df['title'] != base_movie_title]
+                       .sort_values(by='similarity', ascending=False)
+                       .head(5))
+    
+    # Devolver la lista de títulos
+    top_5_titles = recommendations['title'].tolist()
+    return top_5_titles
