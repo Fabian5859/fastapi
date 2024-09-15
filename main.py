@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 import pandas as pd
-
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import StandardScaler
+from typing import List  # Importar List desde typing
+
 
 df = pd.read_parquet("./Dataset/movies_dataset.parquet", engine='pyarrow')
 
