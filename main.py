@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 import pandas as pd
 
-import seaborn as sns
-import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import StandardScaler
 
