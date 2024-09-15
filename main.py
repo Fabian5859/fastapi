@@ -103,8 +103,8 @@ def get_director(nombre_director: str):
         return {"mensaje": "Director no encontrado"}
 
 # Función para recomendación
-@app.get('/get_recommendations/{base_movie_title}')
-def get_top_5_recommendations(base_movie_title):
+@app.get('/get_recommendations/{base_movie_title}', response_model=List[str])
+def get_top_5_recommendations(base_movie_title: str):
     # Verificar si la película base está en el DataFrame
     if base_movie_title not in df['title'].values:
         raise ValueError(f"La película '{base_movie_title}' no se encuentra en el dataset.")
