@@ -6,6 +6,7 @@ from typing import List  # Importar List desde typing
 
 
 df = pd.read_parquet("./Dataset/movies_dataset.parquet", engine='pyarrow')
+df2 = pd.read_parquet("./Dataset/df_Recomendations.parquet", engine='pyarrow')
 
 app = FastAPI()
 
@@ -108,29 +109,29 @@ def get_director(nombre_director: str):
 def get_top_5_recommendations(base_movie_title: str):
     try:
         # Verificar si la película base está en el DataFrame
-        if base_movie_title not in df['title'].values:
+        if base_movie_title not in df2['title'].values:
             raise HTTPException(status_code=404, detail=f"La película '{base_movie_title}' no se encuentra en el dataset.")
         
         # Paso 1: Preparar el Dataset
         features = ['vote_average', 'popularity', 'runtime', 'release_year']
-        X = df[features]
+        X = df2[features]
 
         # Normalizar las características
         scaler = StandardScaler()
         X_scaled = scaler.fit_transform(X)
 
         # Paso 2: Encontrar el índice de la película base
-        movie_base_index = df[df['title'] == base_movie_title].index[0]
+        movie_base_index = df2[df2['title'] == base_movie_title].index[0]
         movie_base_vector = X_scaled[movie_base_index].reshape(1, -1)
 
         # Paso 3: Calcular la Similitud del Coseno
         similarities = cosine_similarity(movie_base_vector, X_scaled).flatten()
 
         # Paso 4: Añadir la similitud al DataFrame
-        df['similarity'] = similarities
+        df2['similarity'] = similarities
 
         # Paso 5: Obtener las 5 películas más similares
-        recommendations = (df[df['title'] != base_movie_title]
+        recommendations = (df2[df2['title'] != base_movie_title]
                            .sort_values(by='similarity', ascending=False)
                            .head(5))
         
