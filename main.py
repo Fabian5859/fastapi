@@ -138,5 +138,9 @@ def get_top_5_recommendations(base_movie_title: str):
         top_5_titles = recommendations['title'].tolist()
         return top_5_titles
 
+    except HTTPException as http_err:
+        raise http_err  # Manejar errores HTTP específicos
     except Exception as e:
+        # Manejo general de excepciones
+        print(f"Error: {str(e)}")  # Puedes usar un logger en lugar de print en producción
         raise HTTPException(status_code=500, detail=f"Ocurrió un error: {str(e)}")
