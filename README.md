@@ -9,7 +9,7 @@ Tabla de contenido
 # Introducción
 Este proyecto se realiza como parte del bootcamp Data Science de la escuela Soy Henry. 
 El objetivo de este proyecto es realizar un MVP del modelo de ML: un sistema de recomendación de pelìculas. 
-En el proyecto del sistema de recomendación de películas se utiliza FastAPI para consumir los datos, y se realiza un deployment en render, para que los usuario puedan tener acceso a los siguietnes endpoint:
+En el proyecto del sistema de recomendación de películas se utiliza FastAPI para consumir los datos, y se realiza un deployment en render, para que los usuarios puedan tener acceso a los siguientes endpoint:
 - Cantidad filmaciones mes: Retorna la cantidad de películas que fueron estrenadas en el mes consultado.
 - Cantidad filmaciones día: Retorna la cantidad de películas que fueron estrenadas en el día consultado.
 - score titulo: Retorna el score de una película consultada por título
@@ -28,13 +28,13 @@ Se utilizaron las siguientes librerias de python:
 - Pandas. Para el preprocesamiento de los datos.
 - matplotlib.pyplot y seaborn. Para el EDA del proyecto.
 
-El deploymend del proyecto puede ser consultado en el siguiente enlace:
+El deployment del proyecto puede ser consultado en el siguiente enlace:
 https://fastapi-nteb.onrender.com/docs
 
 # Retos del proyecto
 - El proyecto buscaba realizar un MVP (Mìnimo producto viable) cumpliendo un deadline, por lo cual era importante priorizar las tareas importantes.
 - El dataset inicial requeria realizar un desanidado de los datos, ya que algunos campos tenian los datos como diccionarios o listas de diccionarios. Esta tarea demando un tiempo considerable en la ejecuciòn del proyecto, pero finalmente se logró resolver exitosamente.
-- Para el desarrollo del proyectdo se debe investigar sobre las herramientas FastAPI y Render.
+- Para el desarrollo del proyecto se debe investigar sobre las herramientas FastAPI y Render.
   
 
 # Contacto
