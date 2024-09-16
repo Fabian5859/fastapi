@@ -73,38 +73,7 @@ def votos_titulo(titulo: str):
     else:
         return {"mensaje": "Película no encontrada"}
 
-# Función para obtener los datos de un actor
-@app.get('/get_actor/{nombre_actor}')
-def get_actor(nombre_actor: str):
-    actor_peliculas = df[df['cast'].apply(lambda x: nombre_actor.lower() in str(x).lower())]
-    if not actor_peliculas.empty:
-        cantidad = actor_peliculas.shape[0]
-        retorno_total = actor_peliculas['return'].sum()
-        promedio_retorno = retorno_total / cantidad
-        return {"mensaje": f"El actor {nombre_actor} ha participado de {cantidad} filmaciones, con un retorno total de {retorno_total} y un promedio de {promedio_retorno} por filmación"}
-    else:
-        return {"mensaje": "Actor no encontrado"}
-
-# Función para obtener los datos de un director
-@app.get('/get_director/{nombre_director}')
-def get_director(nombre_director: str):
-    director_peliculas = df[df['crew'].apply(lambda x: nombre_director.lower() in str(x).lower() and 'Director' in str(x))]
-    if not director_peliculas.empty:
-        detalles_peliculas = []
-        for _, row in director_peliculas.iterrows():
-            detalles_peliculas.append({
-                "titulo": row['title'],
-                "fecha_lanzamiento": row['release_date'],
-                "retorno": row['return'],
-                "costo": row['budget'],
-                "ganancia": row['revenue']
-            })
-        retorno_total = director_peliculas['return'].sum()
-        return {"mensaje": f"El director {nombre_director} ha tenido un retorno total de {retorno_total}. Detalles de sus películas:", "peliculas": detalles_peliculas}
-    else:
-        return {"mensaje": "Director no encontrado"}
-
-
+#Función para recomendar las 5 peliculas más similares a la pelicula base
 @app.get('/get_recommendations/{base_movie_title}', response_model=List[str])
 def get_top_5_recommendations(base_movie_title: str):
     try:
